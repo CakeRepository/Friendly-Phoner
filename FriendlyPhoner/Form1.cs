@@ -6,10 +6,12 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
+using Twilio.TwiML;
 using Twilio.Types;
 
 namespace FriendlyPhoner
@@ -39,17 +41,29 @@ namespace FriendlyPhoner
 
         private void callButton_Click(object sender, EventArgs e)
         {
+            loopcaller();
+        }
+
+        async void loopcaller()
+        {
             string accountSid = AuthSettings.Default.AccountSID;
             string authToken = AuthSettings.Default.AuthToken;
             TwilioClient.Init(accountSid, authToken);
 
-            var call = CallResource.Create(
-            url: new Uri("http://demo.twilio.com/docs/voice.xml"),
-            to: new Twilio.Types.PhoneNumber(numberToCall.Text),
-            from: new Twilio.Types.PhoneNumber(phoneNumberTextBox.Text)
-        );
+            for (int i = 0; i <= 1000; i++)
+            {
+                
+                var call = CallResource.Create(
+                record: true,
+                url: new Uri("http://demo.twilio.com/docs/voice.xml"),
+                to: new Twilio.Types.PhoneNumber(numberToCall.Text),
+                from: new Twilio.Types.PhoneNumber(phoneNumberTextBox.Text)
+            );
 
-            Console.WriteLine(call.Sid);
+                Console.WriteLine(call.Sid);
+                Thread.Sleep(30000);
+            }
         }
+   
     }
 }
