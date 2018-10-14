@@ -41,36 +41,43 @@ namespace FriendlyPhoner
 
         private void callButton_Click(object sender, EventArgs e)
         {
-            callLoopLoopverAsync();
+
+            for (int i = 0; i < richPhoneNumberFrom.Lines.Count();i++)
+            {
+                var fromCall = richPhoneNumberFrom.Lines[i];
+                var toCall = numberToCall.Text;
+                Task.Run(() =>
+                {
+                    loopcaller(fromCall, toCall);
+                });
+            }
         }
 
-        private async Task callLoopLoopverAsync()
-        {
-            await loopcaller();
-        }
-
-         
-
-        async Task loopcaller()
+        async Task loopcaller(string fromCall, string toCall)
         {
             string accountSid = AuthSettings.Default.AccountSID;
             string authToken = AuthSettings.Default.AuthToken;
             TwilioClient.Init(accountSid, authToken);
 
-            for (int i = 1000; i <= 1000; i++)
+            for (int i = 0; i <= 1000; i++)
             {
-                
+
                 var call = CallResource.Create(
                 record: true,
-                url: new Uri("https://drive.google.com/file/d/1kIH81J_4cSq-xS5rio1l8sXdvvooNhii/view?usp=sharing"),
-                to: new Twilio.Types.PhoneNumber(numberToCall.Text),
-                from: new Twilio.Types.PhoneNumber(phoneNumberTextBox.Text)
+                url: new Uri("http://demo.twilio.com/docs/voice.xml"),
+                from: new Twilio.Types.PhoneNumber(fromCall),
+                to: new Twilio.Types.PhoneNumber(toCall)
+                
             );
 
                 Console.WriteLine(call.Sid);
-                Thread.Sleep(30000);
+                Thread.Sleep(60000);
             }
         }
-   
+
+        private void richPhoneNumberFrom_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
