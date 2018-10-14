@@ -38,6 +38,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.numberToCall = new System.Windows.Forms.TextBox();
             this.richPhoneNumberFrom = new System.Windows.Forms.RichTextBox();
+            this.twilioLogging = new System.Windows.Forms.RichTextBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,7 +48,7 @@
             this.toolStripDropDownButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(390, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(775, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -121,17 +122,27 @@
             this.richPhoneNumberFrom.Text = "";
             this.richPhoneNumberFrom.TextChanged += new System.EventHandler(this.richPhoneNumberFrom_TextChanged);
             // 
+            // twilioLogging
+            // 
+            this.twilioLogging.Location = new System.Drawing.Point(477, 31);
+            this.twilioLogging.Name = "twilioLogging";
+            this.twilioLogging.Size = new System.Drawing.Size(286, 307);
+            this.twilioLogging.TabIndex = 7;
+            this.twilioLogging.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 350);
+            this.ClientSize = new System.Drawing.Size(775, 350);
+            this.Controls.Add(this.twilioLogging);
             this.Controls.Add(this.richPhoneNumberFrom);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.numberToCall);
             this.Controls.Add(this.callButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.toolStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Friendly Phoner";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -153,6 +164,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox numberToCall;
         private System.Windows.Forms.RichTextBox richPhoneNumberFrom;
+        private System.Windows.Forms.RichTextBox twilioLogging;
     }
 }
 

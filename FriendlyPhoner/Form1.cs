@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
@@ -18,9 +19,43 @@ namespace FriendlyPhoner
 {
     public partial class Form1 : Form
     {
+        private static System.Timers.Timer aTimer;
+        List<string> currentList;
         public Form1()
         {
             InitializeComponent();
+            currentList = new List<string>();
+        }
+
+        private void SetTimer()
+        {
+            // Create a timer with a two second interval.
+            aTimer = new System.Timers.Timer(30000);
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += GetCallLogsTimesEvent;
+            aTimer.AutoReset = true;
+            aTimer.Enabled = true;
+        }
+
+        private void GetCallLogsTimesEvent(object sender, ElapsedEventArgs e)
+        {
+            var calls = CallResource.Read();
+            List<string> tmpList = new List<string>();
+            foreach (var record in calls)
+            {
+                tmpList.Add(record.To.ToString() + " " + record.Status + " " + record.EndTime);
+            }
+            if(!tmpList.All(currentList.Contains))
+            {
+                currentList = tmpList;
+                foreach(var item in currentList)
+                {
+                    twilioLogging.Invoke((MethodInvoker)delegate {
+                        // Running on the UI thread
+                        twilioLogging.Text += item + Environment.NewLine;
+                    });
+                }
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -36,12 +71,21 @@ namespace FriendlyPhoner
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
+            if(AuthSettings.Default.AccountSID == "" || AuthSettings.Default.AuthToken == "")
+            {
+                TwilioSettings ts = new TwilioSettings();
+                ts.Show();
+            }
+            string accountSid = AuthSettings.Default.AccountSID;
+            string authToken = AuthSettings.Default.AuthToken;
+            TwilioClient.Init(accountSid, authToken);
 
+            SetTimer();
         }
 
         private void callButton_Click(object sender, EventArgs e)
         {
-
             for (int i = 0; i < richPhoneNumberFrom.Lines.Count();i++)
             {
                 var fromCall = richPhoneNumberFrom.Lines[i];
@@ -57,7 +101,7 @@ namespace FriendlyPhoner
         {
             string accountSid = AuthSettings.Default.AccountSID;
             string authToken = AuthSettings.Default.AuthToken;
-            TwilioClient.Init(accountSid, authToken);
+            
 
             for (int i = 0; i <= 1000; i++)
             {

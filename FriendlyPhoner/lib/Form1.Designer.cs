@@ -88,7 +88,7 @@
             this.Controls.Add(this.accountSIDTextBox);
             this.Controls.Add(this.saveButton);
             this.Name = "TwilioSettings";
-            this.Text = "Form1";
+            this.Text = "Twilio Settings";
             this.ResumeLayout(false);
             this.PerformLayout();
 
